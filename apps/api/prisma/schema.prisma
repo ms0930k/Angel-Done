@@ -1,0 +1,88 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  SUPREME_ADMIN
+  ADMIN
+  AGENT
+  USER
+}
+
+enum LedgerType {
+  ALLOCATE
+  REVOKE
+  ADJUST
+}
+
+model User {
+  id           String   @id @default(uuid())
+
+  name         String
+
+  username     String   @unique
+
+  email        String   @unique
+
+  passwordHash String
+
+  role         Role
+
+  parentId     String?
+
+  parent       User?  @relation("Hierarchy", fields: [parentId], references: [id])
+  children     User[] @relation("Hierarchy")
+
+  capitalAccount CapitalAccount?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model CapitalAccount {
+  id String @id @default(uuid())
+
+  userId String @unique
+
+  allocatedLimit Decimal @db.Decimal(20,2)
+
+  equity Decimal @db.Decimal(20,2)
+
+  user User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+}
+
+model CapitalLedger {
+  id String @id @default(uuid())
+
+  fromUserId String?
+  toUserId String?
+
+  amount Decimal @db.Decimal(20,2)
+
+  type LedgerType
+
+  createdAt DateTime @default(now())
+}
+
+model AuditLog {
+  id String @id @default(uuid())
+
+  actorId String
+
+  action String
+
+  entityType String
+
+  entityId String
+
+  metadata Json?
+
+  createdAt DateTime @default(now())
+}
