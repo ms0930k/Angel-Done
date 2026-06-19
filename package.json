@@ -1,0 +1,20 @@
+{
+  "name": "angel-done",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ms0930k/Angel-Done.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ms0930k/Angel-Done/issues"
+  },
+  "homepage": "https://github.com/ms0930k/Angel-Done#readme"
+}
